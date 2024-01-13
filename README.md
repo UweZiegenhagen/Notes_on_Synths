@@ -1,6 +1,7 @@
 # Notes on Synths
 
-My notes on synthesizers,  MIDI, and more.
+Some remarks on synthesizers,  MIDI, and more.
+
 
 ## Books
 
@@ -30,4 +31,6 @@ These recommendations had been posted in r/synthesizers
 ### free
 
 * Audiokit Synth One (iPad)
+
+## Terms
 
