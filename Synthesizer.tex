@@ -1,4 +1,5 @@
- \documentclass[11pt,ngerman]{beamer}
+%!TEX TS-program = pdflatex
+\documentclass[11pt,ngerman]{beamer}
  
  \usepackage[T1]{fontenc}
  \usepackage{booktabs}
@@ -31,16 +32,16 @@
  \frametitle{Über mich und diese Präsentation}
  
 \begin{itemize}
- \item Dr. Uwe Ziegenhagen, IT-Spezialist für Treasury Systeme \item lebe und arbeite in Köln
+ \item Dr. Uwe Ziegenhagen, IT-Spezialist für Treasury Systeme \item lebe und arbeite in Köln, spiele kein Instrument
  \item Interesse an der Entstehung von elektronischer Musik im Synthesizer
- \item Diese Präsentation dient zum Sammeln von Informationen, um Verständnis aufzubauen, wie ein Synthesizer funktioniert
+ \item Diese Präsentation: wie funktioniert ein Synthesizer 
  \item Zahlreiche unterschiedliche Quellen, Wikipedia, etc.
 \end{itemize}
  \end{frame}
  
 \section{Theoretische Grundlagen}
 
-\subsection{Ton und Klang}
+%\subsection{Ton und Klang}
 
 \begin{frame}
 \frametitle{Ton}
@@ -67,7 +68,7 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 
 \begin{itemize}
 \item in der physikalischen Akustik: Klang = Ton
-\item in der Musiktheorie das simultane Auftreten mehrerer Töne
+\item in der Musiktheorie: das simultane Auftreten mehrerer Töne
 \item Gemisch aus:
 
 \begin{itemize}
@@ -78,12 +79,11 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 
 \item Grundton bestimmt die wahrgenommene Tonhöhe
 \item Obertöne bestimmen die Klangfarbe
-\item Obertöne sind üblicherweise die ganzzahligen Vielfache des Grundtons (Kammerton\footnote{Stimmton/Normalton} a\textsuperscript{1} = 440 Hz, a\textsuperscript{2} = 880 Hz, a\textsuperscript{3} = 1320 Hz))
+\item Obertöne sind üblicherweise die ganzzahligen Vielfache des Grundtons (Kammerton\footnote{Stimmton/Normalton} a\textsuperscript{1} = 440 Hz, a\textsuperscript{2} = 880 Hz, \newline a\textsuperscript{3} = 1320 Hz))
 \end{itemize}
 \end{frame}
 
-
-\subsection{Synthese}
+%\subsection{Synthese}
 
 \begin{frame}
 \frametitle{Hüllkurven}
@@ -156,7 +156,23 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 \section{Synthesizer - Geschichtliches}
 
 \begin{frame}
-\frametitle{Theremin und Co}
+\frametitle{Geschichtliches I}
+
+
+\begin{itemize}
+\item 1957: RCA Mark II Synthesizer, erster programmierbarer elektronischer Synthesizer, Steuerung über Lochkarten 
+\item 1964: erster Moog Synthesizer von Robert Moog, erste VCOs, Envelopes, Noise Generators
+\item 1970: Minimoog
+\item 1978: Prophet-5 von Sequential Circuits (Dave Smith), erste Verwendung von Mikroprozessoren
+\item 1982: MIDI Protokoll
+\item 1983: Yamaha DX7, erste Verwendung der FM Synthese, mehr als 100\,000 verkaufte Exemplare
+\item 1995: Eurorack Format von Doepfer Musikelektronik
+\item 1997: Propellerhead ReBirth und Seer Systems Reality, erste Software Synthesizer
+\end{itemize}
+\end{frame} 
+ 
+\begin{frame}
+\frametitle{Geschichtliches II}
 
 
 \begin{itemize}
@@ -167,54 +183,100 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 \item 
 \item 
 \end{itemize}
-\end{frame} 
+\end{frame}
+ 
  
 \section{Arten von Synthesizern}
  
 \begin{frame}
-\frametitle{Modular, Semi-Modular}
+\frametitle{Kompakt, Modular, Semi-Modular}
 
-\begin{itemize}
-\item 
-\item 
-\item 
-\item 
-\item 
-\item 
-\end{itemize}
+\begin{description}
+\item [Kompakt] alles in einem Gerät vorkonfiguriert, keine Möglichkeit, \textit{extern} zu patchen
+\item [Semi-Modular] vorkonfiguriert, aber mit Patch-Punkten, um das Gerät zu \enquote{verlassen}
+\item [Modular] komplette Kontrolle, wie der Signal-Fluss aussehen soll, aber teuerste Option
+\end{description}
 \end{frame}
 
-\section{Kompakte Synthesizer}
+
+
+
+%\section{Kompakte Synthesizer}
  
 \begin{frame}
-\frametitle{}
-
+\frametitle{Kompakte Synthesizer}
 
 \begin{itemize}
-\item 
-\item 
-\item 
-\item 
-\item 
-\item 
+\item beliebte Geräte: Korg Microkorg, Arturia Microfreak
 \end{itemize}
 \end{frame}
  
-\section{Modulare Synthesizer (mit VCVRack2)} 
+ 
+ \begin{frame}
+ \frametitle{Semi-Modulare Synthesizer}
+  
+ \begin{itemize}
+ \item Beispiele: Roland System-1m, Moog Mother-32, Arturia Microbrute
+ \item eigenständige Synthesizer, aber patchbar 
+ \item 
+ \item 
+ \item 
+ \item 
+ \end{itemize}
+ \end{frame}
+ 
+ 
+ 
+%\section{Modulare Synthesizer} 
  
 \begin{frame}
-\frametitle{}
-
+\frametitle{Voll-Modulare Synthesizer}
 
 \begin{itemize}
-\item 
-\item 
-\item 
-\item 
-\item 
-\item 
+\item Synthesizer aus unterschiedlichen Modulen zusammenstellen
+\item Im Wesentlichen drei Standards:
+
+\begin{itemize}
+	\item Eurorack, mit 3 HE (Höheneinheiten)
+	\item Buchla Modular (4 HE)
+	\item Moog (5 HE)
+\end{itemize}
+\item Eurorack hat die größte Verbreitung, veröffentlicht 1996 von Doepfer
+\item ModularGrid listet knapp 15\,000 unterschiedliche Eurorack-Module
+\item Verbreitung von Buchla und Moog eher gering, Preise \textit{echt} hoch $\Rightarrow$ Fokus daher auf Eurorack
+\item Preislich schmerzhaft, unter 1\,000 Euro Gesamtpreis wenig sinnvoll
 \end{itemize}
 \end{frame} 
+
+\begin{frame}
+\frametitle{Eurorack Gehäuse}
+
+\begin{itemize}
+\item Gehäuse, das die einzelnen Module aufnimmt
+\item Größenangabe in \textit{U} und \textit{HP}
+\item 3U = eine Modulreihe, 6U = zwei Modulreihen
+\item HP = Horizontal Pitch = 0.2 Zoll bzw. 5.08 mm
+\item Leergehäuse 1 U, 84 HP bei ca. 150 Euro
+\item dazu noch ca. 100 EUR für Netzteil und Busschiene (Stromversorgung der einzelnen Module)
+\item fertige Gehäuse ab 250 Euro
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Module}
+
+\begin{itemize}
+\item In das Eurorack werden dann die einzelnen Module eingesetzt
+\item Wichtig: Breite und Einbautiefe, nicht jedes Gehäuse kann jedes Modul aufnehmen
+\item Welche Module? 
+\begin{itemize}
+	\item Ton muss rein: Sequencer/CV \& Midi Interface
+	\item Ton muss raus:
+	\item Dazwischen: Qual der Wahl! VCOs, Mixer, Effekte
+\end{itemize}
+\end{itemize}
+\end{frame}
+
  
 \section{Links} 
  
