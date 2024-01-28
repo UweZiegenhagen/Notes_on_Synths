@@ -6,3 +6,5 @@ Synthesizer.log
 Synthesizer.nav
 Synthesizer.out
 Synthesizer.toc
+*.fdb_latexmk
+Synthesizer.fls
