@@ -32,7 +32,8 @@
  \frametitle{Über mich und diese Präsentation}
  
 \begin{itemize}
- \item Dr. Uwe Ziegenhagen, IT-Spezialist für Treasury Systeme \item lebe und arbeite in Köln, spiele kein Instrument
+ \item Dr. Uwe Ziegenhagen, IT-Spezialist für Treasury Systeme \item Lebe und arbeite in Köln, kann kein Instrument spielen
+ \item Das hält mich jedoch nicht davon ab, es zu tun\ldots
  \item Interesse an der Entstehung von elektronischer Musik im Synthesizer
  \item Diese Präsentation: wie funktioniert ein Synthesizer 
  \item Zahlreiche unterschiedliche Quellen, Wikipedia, etc.
@@ -47,9 +48,9 @@
 \frametitle{Ton}
 
 \begin{itemize}
-	\item gleichmäßig und einheitliche Schwingung der Luft, die vom (menschlichen) Gehör wahrgenommen werden kann
-	\item anders als ein Impuls (Hammerschlag, Knall)
-	\item anders als ein Geräusch (ungleichmäßige Schwingungen und Frequenzen)
+	\item gleichmäßige und einheitliche Schwingung der Luft, die vom (menschlichen) Gehör wahrgenommen werden kann
+	\item Ton $\not=$ Impuls (Hammerschlag, Knall)
+	\item Ton $\not=$ Geräusch (ungleichmäßige Schwingungen und Frequenzen)
 \end{itemize}\vspace*{1em}
 
 Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
@@ -85,73 +86,6 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 
 %\subsection{Synthese}
 
-\begin{frame}
-\frametitle{Hüllkurven}
-
-\begin{itemize}
-\item dienen zur Modellierung des Signalverlaufs
-\item meist vier Stufen: A, D, S und R
-\end{itemize}
- {\scriptsize
-\begin{description}
-\item[A] Attack (Anstieg) Durch das Drücken der Taste erhält der Hüllkurvengenerator einen Impuls, die Attack-Phase beginnt. Die Attack-Zeit gibt die Zeit an, in der die Spannung von Null bis auf ihr vorgegebenes Maximum ansteigt. 
-
-\item[D] Decay (Abfall)  Unmittelbar nachdem das Maximum erreicht wurde, beginnt die Decay-Phase. Der Decay-Parameter (Dauer oder Steilheit) legt die Zeit fest, in der die Spannung vom Maximum auf den Sustain-Pegel absinkt.
-
-\item[S] Sustain (Halten)  Der Sustain-Pegel gibt an, wie hoch die Spannung ist (in Prozent des Maximums), während die Taste gehalten wird. 
-
-\item[R] Release (Freigeben) Sobald die Taste losgelassen wird, beginnt die Release-Phase. In der Release-Phase sinkt die Spannung vom gegenwärtigen Pegel auf Null ab. Der Release-Parameter (Dauer oder Steilheit) legt fest, wie lange dieser Vorgang dauert. 
-
-\end{description}
-}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{ADSR-Hüllkurve (Wikipedia)}
-
-\begin{center}
-\begin{tikzpicture}
-%\draw[step=0.5cm,lightgray,thin] (0,0) grid (10,7);
-\draw[very thick, black,->](1,1) -- (9.5,1);
-\draw[very thick, black,->](1,1) -- (1,6.5);
-\draw[very thick, green,](3,1) -- (3,6);
-\draw[very thick, orange,](5,1) -- (5,6);
-\draw[very thick, black](7,1) -- (7,6);
-\draw[very thick, magenta](9,1) -- (9,6);
-
-\draw[very thick, gray,](1,1) -- (3,5.5) -- (5,4) -- (7,4)--(9,1);
-% max amp line
-\draw[thick, gray,dotted](0.8,5.5) -- (9.5,5.5);
-
-\draw[very thick, blue,->](6,1.1) -- (6,3.9);
-
-\draw[very thick, green,->](1.1,5.65) -- (2.9,5.65);
-\draw[very thick, orange,->](3.1,5.65) -- (4.9,5.65);
-
-\draw[very thick, blue](5.1,4) -- (6.9,4);
-
-\draw[very thick, magenta,->](7.1,5.65) -- (8.9,5.65);
-
-\node[label=left:0] (A) at (1,1) {};
-\node[label=below:t] (B) at (9.5,1) {};
-\node[label=left:{{\scriptsize Amp\textsubscript{max}}}] (C) at (1,5.5) {};
-
-\node[label=above:A] (D) at (2,5.5) {};
-\node[label=above:D] (E) at (4,5.5) {};
-\node[label=left:S] (F) at (6,2.5) {};
-\node[label=above:R] (G) at (8,5.5) {};
-
-\draw[very thick, black,->](1,0.5) -- (1,0.9);
-\draw[very thick, black,->](7,0.5) -- (7,0.9);
-
-\node[label=above:{Key press}] (D) at (1.1,-0.2) {};
-\node[label=above:{Key release}] (D) at (7.2,-0.2) {};
-
-\end{tikzpicture}
-\end{center}
-
-\end{frame}
  
 \section{Synthesizer - Geschichtliches}
 
@@ -274,6 +208,137 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 	\item Ton muss raus:
 	\item Dazwischen: Qual der Wahl! VCOs, Mixer, Effekte
 \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Aufbau eines Synthesizers}
+
+\begin{frame}
+\frametitle{VCO, LFO, VCF, VCA \& Co}
+
+\begin{center}
+\begin{tikzpicture}[
+mybox/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,align=center},
+	]
+\draw[step=1cm,lightgray,thin] (0,0) grid (11,7);
+\node at (2,6) [mybox] (noise) {Noise};
+\node at (2,4.5) [mybox] (vco2)  {VCO2};
+\node at (2,3) [mybox] (vco1) {VCO1};
+
+\node at (5,4.5) [mybox]  (vcf) {VCF};
+\node at (8,4.5) [mybox] (vca) {VCA};
+
+\node at (5,2.5) [mybox] (adsr1) {ADSR};
+\node at (8,2.5) [mybox] (adsr2) {ADSR};
+
+\node at (1,1) [mybox] (keyboard) {Keyboard};
+
+\node at (10.5,4.5) (output) {output};
+
+\draw [thick,->] (vco1) -- (vcf);
+\draw [thick,->] (vco2) -- (vcf);
+
+\draw [thick,->] (adsr1) -- (vcf);
+\draw [thick,->] (adsr2) -- (vca);
+
+\draw [thick,->] (keyboard) -- (adsr1);
+\draw [thick,->] (keyboard) -- (adsr2);
+
+\draw [thick,->] (keyboard) -- (vco1);
+\draw [thick,->] (keyboard) -- (vco2);
+
+\draw [thick,->] (noise) -- (vcf);
+
+\draw [thick,->] (vcf) -- (vca);
+
+\draw [thick,->] (vca) -- (output);
+
+\end{tikzpicture}
+\end{center}
+
+%http://web.mit.edu/klund/www/weblatex/node2.html
+\end{frame}
+
+\begin{frame}
+\frametitle{Hüllkurven}
+
+\begin{itemize}
+\item dienen zur Modellierung des Signalverlaufs
+\item meist vier Stufen: A, D, S und R
+\end{itemize}
+ {\scriptsize
+\begin{description}
+\item[A] Attack (Anstieg) Durch das Drücken der Taste erhält der Hüllkurvengenerator einen Impuls, die Attack-Phase beginnt. Die Attack-Zeit gibt die Zeit an, in der die Spannung von Null bis auf ihr vorgegebenes Maximum ansteigt. 
+
+\item[D] Decay (Abfall)  Unmittelbar nachdem das Maximum erreicht wurde, beginnt die Decay-Phase. Der Decay-Parameter (Dauer oder Steilheit) legt die Zeit fest, in der die Spannung vom Maximum auf den Sustain-Pegel absinkt.
+
+\item[S] Sustain (Halten)  Der Sustain-Pegel gibt an, wie hoch die Spannung ist (in Prozent des Maximums), während die Taste gehalten wird. 
+
+\item[R] Release (Freigeben) Sobald die Taste losgelassen wird, beginnt die Release-Phase. In der Release-Phase sinkt die Spannung vom gegenwärtigen Pegel auf Null ab. Der Release-Parameter (Dauer oder Steilheit) legt fest, wie lange dieser Vorgang dauert. 
+
+\end{description}
+}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{ADSR-Hüllkurve (Wikipedia)}
+
+\begin{center}
+\begin{tikzpicture}
+%\draw[step=0.5cm,lightgray,thin] (0,0) grid (10,7);
+\draw[very thick, black,->](1,1) -- (9.5,1);
+\draw[very thick, black,->](1,1) -- (1,6.5);
+\draw[very thick, green,](3,1) -- (3,6);
+\draw[very thick, orange,](5,1) -- (5,6);
+\draw[very thick, black](7,1) -- (7,6);
+\draw[very thick, magenta](9,1) -- (9,6);
+
+\draw[very thick, gray,](1,1) -- (3,5.5) -- (5,4) -- (7,4)--(9,1);
+% max amp line
+\draw[thick, gray,dotted](0.8,5.5) -- (9.5,5.5);
+
+\draw[very thick, blue,->](6,1.1) -- (6,3.9);
+
+\draw[very thick, green,->](1.1,5.65) -- (2.9,5.65);
+\draw[very thick, orange,->](3.1,5.65) -- (4.9,5.65);
+
+\draw[very thick, blue](5.1,4) -- (6.9,4);
+
+\draw[very thick, magenta,->](7.1,5.65) -- (8.9,5.65);
+
+\node[label=left:0] (A) at (1,1) {};
+\node[label=below:t] (B) at (9.5,1) {};
+\node[label=left:{{\scriptsize Amp\textsubscript{max}}}] (C) at (1,5.5) {};
+
+\node[label=above:A] (D) at (2,5.5) {};
+\node[label=above:D] (E) at (4,5.5) {};
+\node[label=left:S] (F) at (6,2.5) {};
+\node[label=above:R] (G) at (8,5.5) {};
+
+\draw[very thick, black,->](1,0.5) -- (1,0.9);
+\draw[very thick, black,->](7,0.5) -- (7,0.9);
+
+\node[label=above:{Key press}] (D) at (1.1,-0.2) {};
+\node[label=above:{Key release}] (D) at (7.2,-0.2) {};
+
+\end{tikzpicture}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Meine Synthesizer}
+
+
+\begin{itemize}
+\item Moog Werkstatt-01
+\item 
+\item 
+\item 
+\item 
+\item 
 \end{itemize}
 \end{frame}
 
