@@ -7,7 +7,8 @@
  \usepackage{graphicx}
  \usepackage{csquotes}
  \usepackage{xcolor}
- \usepackage{tikz}
+ \usepackage{calc,tikz}
+ %\usetikzlibrary{positioning}
 
 \author{Uwe Ziegenhagen}
 \title{Synthesizer}
@@ -206,7 +207,7 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 \begin{itemize}
 	\item Ton muss rein: Sequencer/CV \& Midi Interface
 	\item Ton muss raus:
-	\item Dazwischen: Qual der Wahl! VCOs, Mixer, Effekte
+	\item Dazwischen: Qual der Wahl! Oszillatoren, Mixer, Effekte
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -218,46 +219,96 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 
 \begin{center}
 \begin{tikzpicture}[
-mybox/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,align=center},
+box/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,align=center},
 	]
 \draw[step=1cm,lightgray,thin] (0,0) grid (11,7);
-\node at (2,6) [mybox] (noise) {Noise};
-\node at (2,4.5) [mybox] (vco2)  {VCO2};
-\node at (2,3) [mybox] (vco1) {VCO1};
+\node at (2,6) [box] (noise) {Noise};
+\node at (2,4.5) [box] (vco2)  {VCO2};
+\node at (2,3) [box] (vco1) {VCO1};
+\node at (5,4.5) [box]  (vcf) {VCF};
+\node at (8,4.5) [box] (vca) {VCA};
+\node at (5,2) [box] (adsr1) {ADSR};
+\node at (8,2) [box] (adsr2) {ADSR};
+\node at (0.75,1) [box] (keyboard) {Keyboard};
 
-\node at (5,4.5) [mybox]  (vcf) {VCF};
-\node at (8,4.5) [mybox] (vca) {VCA};
+\node at (0.25,4.8) (offset) {\footnotesize offset};
+%\node [box,below=of offset] (belowoffset) {B};
 
-\node at (5,2.5) [mybox] (adsr1) {ADSR};
-\node at (8,2.5) [mybox] (adsr2) {ADSR};
+\node at (10.25,4.5) (output) {output};
+\node at (3,1.25) (gate) {gate};
 
-\node at (1,1) [mybox] (keyboard) {Keyboard};
+\node at (0,3) (cv) {\footnotesize\parbox{\widthof{control}}{
+    control \\ voltage }};
 
-\node at (10.5,4.5) (output) {output};
-
-\draw [thick,->] (vco1) -- (vcf);
+\draw [thick,->] (vco1) -| (vcf);
 \draw [thick,->] (vco2) -- (vcf);
-
 \draw [thick,->] (adsr1) -- (vcf);
 \draw [thick,->] (adsr2) -- (vca);
+\draw [thick,->] (keyboard) -| (adsr1);
+\draw [thick,->] (keyboard) -| (adsr2);
+\draw [thick,->] (keyboard) |- (vco1);
+\draw [thick,->] (keyboard) |- (vco2);
 
-\draw [thick,->] (keyboard) -- (adsr1);
-\draw [thick,->] (keyboard) -- (adsr2);
+\draw [thick,->] (0.25,4.5) to [out=0,in=180] (vco2);
 
-\draw [thick,->] (keyboard) -- (vco1);
-\draw [thick,->] (keyboard) -- (vco2);
-
-\draw [thick,->] (noise) -- (vcf);
-
-\draw [thick,->] (vcf) -- (vca);
-
+\draw [thick,->] (noise) -| (vcf);
+\draw [thick,->] (vcf) to [out=120,in=90] (vca);
 \draw [thick,->] (vca) -- (output);
+
+
 
 \end{tikzpicture}
 \end{center}
 
 %http://web.mit.edu/klund/www/weblatex/node2.html
 \end{frame}
+
+\begin{frame}
+\frametitle{VCO, LFO, VCF, VCA \& Co}
+\framesubtitle{VCO}
+
+\begin{itemize}
+	\item VCO = Voltage-Controlled Oscillator, also spannungsgesteuerter Oszillator, erzeugt die hörbaren Töne
+	\item kann üblicherweise verschiedene Wellenformen erzeugen
+	\begin{itemize}
+		\item Rechteck
+		\item Dreieck
+		\item Sägezahn
+	\end{itemize}
+	
+	\item Quasi-Standard: exponentielle Ansteuerung, d.\,h. Erhöhung der Eingangsspannung um 1 Volt $\rightarrow$ Verdoppelung der Ausgangsfrequenz (1 Oktave)
+	\item alternativ lineare Ansteuerung von Hz/Volt (Korg MS-20)
+	\item meist mehrere VCOs in einem Synth 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{VCO, LFO, VCF, VCA \& Co}
+\framesubtitle{LFO}
+
+\begin{itemize}
+\item LFO = Low Frequency Oscillator
+\item erzeugt niederfrequente (< 10 Hertz) Wellenformen (Sinus, Dreieck, Rechteck, Sägezahn etc.)
+\item moduliert die Töne, die von den VCOs kommen:
+
+\begin{description}
+\item[Vibrato] die Tonhöhe desc VCOs (hohe Geschwindigkeit)
+\item[Tremolo] die Lautstärke des VCA (mittlere G.)
+\item[Panorama] die Lautstärek der beiden Ausgänge (niedrige G.)
+\item[Filter] Cut-Off Frequency
+\item[Pulsweite] Pulsweite von Rechtecksignalen des VCOs
+\end{description}
+
+\item Modulation wird oft durch Hüllkurven gesteuert
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
 
 \begin{frame}
 \frametitle{Hüllkurven}
@@ -326,6 +377,31 @@ mybox/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm
 \end{center}
 
 \end{frame}
+
+\begin{frame}
+\frametitle{VCO, LFO, VCF, VCA \& Co}
+\framesubtitle{VCF}
+
+\begin{itemize}
+\item VCF = Voltage Controlled Filter
+\item 
+\item 
+\item 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{VCO, LFO, VCF, VCA \& Co}
+\framesubtitle{VCA}
+
+\begin{itemize}
+\item VCA = Voltage Controlled Amplifier, regelt über die Spannung die Lautstärke des Audiosignals
+\item 
+\item 
+\item 
+\end{itemize}
+\end{frame}
+
 
 
 \begin{frame}
