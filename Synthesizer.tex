@@ -8,7 +8,8 @@
  \usepackage{csquotes}
  \usepackage{xcolor}
  \usepackage{calc,tikz}
- %\usetikzlibrary{positioning}
+\usepackage{calc,tikz}
+\usetikzlibrary{positioning,calc}
 
 \author{Uwe Ziegenhagen}
 \title{Synthesizer}
@@ -102,7 +103,7 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 \item 1982: MIDI Protokoll
 \item 1983: Yamaha DX7, erste Verwendung der FM Synthese, mehr als 100\,000 verkaufte Exemplare
 \item 1995: Eurorack Format von Doepfer Musikelektronik
-\item 1997: Propellerhead ReBirth und Seer Systems Reality, erste Software Synthesizer
+\item 1997: Propellerhead ReBirth und Seer Systems Reality, \newline die ersten Software Synthesizer
 \end{itemize}
 \end{frame} 
  
@@ -176,7 +177,7 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 	\item Buchla Modular (4 HE)
 	\item Moog (5 HE)
 \end{itemize}
-\item Eurorack hat die größte Verbreitung, veröffentlicht 1996 von Doepfer
+\item Eurorack hat die größte Verbreitung, veröffentlicht 1996 von der Doepfer Musikelektronik GmbH
 \item ModularGrid listet knapp 15\,000 unterschiedliche Eurorack-Module
 \item Verbreitung von Buchla und Moog eher gering, Preise \textit{echt} hoch $\Rightarrow$ Fokus daher auf Eurorack
 \item Preislich schmerzhaft, unter 1\,000 Euro Gesamtpreis wenig sinnvoll
@@ -206,7 +207,7 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 \item Welche Module? 
 \begin{itemize}
 	\item Ton muss rein: Sequencer/CV \& Midi Interface
-	\item Ton muss raus:
+	\item Ton muss raus: VCA (Voice-Controlled Amplifier)
 	\item Dazwischen: Qual der Wahl! Oszillatoren, Mixer, Effekte
 \end{itemize}
 \end{itemize}
@@ -218,45 +219,55 @@ Einzelne Töne werden charakterisiert nach \vspace*{0.5em}
 \frametitle{VCO, LFO, VCF, VCA \& Co}
 
 \begin{center}
-\begin{tikzpicture}[
-box/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,align=center},
-	]
-\draw[step=1cm,lightgray,thin] (0,0) grid (11,7);
-\node at (2,6) [box] (noise) {Noise};
-\node at (2,4.5) [box] (vco2)  {VCO2};
-\node at (2,3) [box] (vco1) {VCO1};
-\node at (5,4.5) [box]  (vcf) {VCF};
-\node at (8,4.5) [box] (vca) {VCA};
-\node at (5,2) [box] (adsr1) {ADSR};
-\node at (8,2) [box] (adsr2) {ADSR};
-\node at (0.75,1) [box] (keyboard) {Keyboard};
+\begin{tikzpicture}[box/.style={rectangle,thick,draw=black,
+minimum width=20mm, minimum height=10mm,
+align=center,node distance=0.5cm},scale=0.9, transform shape]
 
-\node at (0.25,4.8) (offset) {\footnotesize offset};
-%\node [box,below=of offset] (belowoffset) {B};
-
-\node at (10.25,4.5) (output) {output};
-\node at (3,1.25) (gate) {gate};
-
-\node at (0,3) (cv) {\footnotesize\parbox{\widthof{control}}{
-    control \\ voltage }};
-
-\draw [thick,->] (vco1) -| (vcf);
+\node at (0,0) [box] (noise) {Noise};
+\node [box, below = of noise] (vco2) {VCO2};
+\node [box, below = of vco2] (vco1) {VCO1};
+\node [box, right = 1cm of vco2] (vcf) {VCF};
 \draw [thick,->] (vco2) -- (vcf);
-\draw [thick,->] (adsr1) -- (vcf);
-\draw [thick,->] (adsr2) -- (vca);
+
+\coordinate (coordoffset) at ($(vco2.west)!0.5!(vco2.north west)$);
+
+\node [left = of coordoffset](offset) {offset};
+\draw [thick,->] (offset) -- (coordoffset);
+
+\node [right = 1cm of noise] (temp1) {};
+
+\coordinate (vcf1) at ($(vcf.west)!0.5!(vcf.north west)$);
+\coordinate (vcf2) at ($(vcf.west)!0.5!(vcf.south west)$);
+\coordinate (vco21) at ($(vco2.north east)!0.5!(vco2.east)$);
+\coordinate (vco22) at ($(vco2.south east)!0.5!(vco2.east)$);
+
+\node [box, right = of vcf] (vca) {VCA};
+\node [box, below = of vcf] (adsr1) {ADSR};
+\node [box, below = of vca] (adsr2) {ADSR};
+
+\node [right = 0.5cm of vca] (output) {output};
+\node [box, below left = 0.5cm of vco1] (keyboard) {Keyboard};
+
+\node [left = 1.5cm of vco1,align=center](cv) {control \\ voltage };
+
+\coordinate (noisetemp1) at ($(noise.east)!0.5!(temp1.west)$);
+\coordinate (vco1adsr1) at ($(vco1.east)!0.5!(adsr1.west)$);
+
+\coordinate (vco2vcf1) at ($(vco21)!0.5!(vcf1)$);
+\coordinate (vco2vcf2) at ($(vco22)!0.5!(vcf2)$);
+
+\draw[->,thick] (vco1.east) -- (vco1adsr1) --  (vco2vcf2) -- (vcf2);
+\draw[->,thick] (noise.east) -- (noisetemp1) --  (vco2vcf1) -- (vcf1);
+
+\draw[->,thick] (adsr1) -- (vcf);
+\draw[->,thick] (adsr2) -- (vca);
+\draw[->,thick] (vcf) -- (vca);
+\draw[->,thick] (vca) -- (output);
+
 \draw [thick,->] (keyboard) -| (adsr1);
 \draw [thick,->] (keyboard) -| (adsr2);
 \draw [thick,->] (keyboard) |- (vco1);
-\draw [thick,->] (keyboard) |- (vco2);
-
-\draw [thick,->] (0.25,4.5) to [out=0,in=180] (vco2);
-
-\draw [thick,->] (noise) -| (vcf);
-\draw [thick,->] (vcf) to [out=120,in=90] (vca);
-\draw [thick,->] (vca) -- (output);
-
-
-
+\draw [thick,->] (keyboard) |- (vco2.base west);
 \end{tikzpicture}
 \end{center}
 
@@ -295,7 +306,7 @@ box/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,a
 \begin{description}
 \item[Vibrato] die Tonhöhe desc VCOs (hohe Geschwindigkeit)
 \item[Tremolo] die Lautstärke des VCA (mittlere G.)
-\item[Panorama] die Lautstärek der beiden Ausgänge (niedrige G.)
+\item[Panorama] die Lautstärke der beiden Ausgänge (niedrige G.)
 \item[Filter] Cut-Off Frequency
 \item[Pulsweite] Pulsweite von Rechtecksignalen des VCOs
 \end{description}
@@ -395,8 +406,9 @@ box/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,a
 \framesubtitle{VCA}
 
 \begin{itemize}
-\item VCA = Voltage Controlled Amplifier, regelt über die Spannung die Lautstärke des Audiosignals
-\item 
+\item VCA = Voltage Controlled Amplifier 
+\item regelt über die Spannung die Lautstärke des Audiosignals
+\item Kann auch zur Erzeugung von Tremolo genutzt werden 
 \item 
 \item 
 \end{itemize}
@@ -410,11 +422,11 @@ box/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,a
 
 \begin{itemize}
 \item Moog Werkstatt-01
-\item 
-\item 
-\item 
-\item 
-\item 
+\item Arturia Minibrute 2 mit Eurorack-Case
+\item Behringer Pro-1 (Klon des Sequential Pro-One)
+\item Roland System 1m
+\item Korg MicroKORG
+\item Artura Microfreak
 \end{itemize}
 \end{frame}
 
@@ -424,7 +436,7 @@ box/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,a
 \begin{frame}[allowframebreaks]
 \frametitle{Linksammlung}
 
-
+{\scriptsize
 \begin{itemize}
 \item \url{de.wikipedia.org/wiki/Subtraktive_Synthese}
 \item \url{de.wikipedia.org/wiki/Additive_Synthese}
@@ -433,7 +445,7 @@ box/.style={rectangle,thick,draw=black,minimum width=20mm, minimum height=10mm,a
 \item \url{https://www.thomann.de/de/onlineexpert_topic_synthesizer.html}
 \item 
 \item 
-\end{itemize}
+\end{itemize}}
 \end{frame} 
  
  
